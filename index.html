@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integração com whatsapp</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+    <script>
+        $("#phoneNumber").mask("+00 (00) 00000-0000");
+    </script>
+</head>
+<body>
+    <form onsubmit="gerar(event)" id="form">
+        <section>
+            <label>Número do whatsapp: </label>
+            <input 
+                type="tel" 
+                name="numero"
+                placeholder="Ex: (99) 99999-9999" 
+                maxlength="14"
+                id="phoneNumber"
+            >
+        </section>
+        <section>
+            <label>Mensagem: </label>
+            <input 
+                type="text" 
+                name="text"
+                placeholder="Mensagem padrão." 
+                width="200"
+                height="200"
+                id="message"
+            >
+        </section>
+        <button type="submit">Gerar link</button>
+    </form>
+    <section>
+        <p>Link</p>
+        <input type="text" name="link" id="linkCopy">
+    </section>
+    <section>
+        <a href="" id="linkClick" target="blanck">Click para ir no whatsapp</a>
+    </section>
+    <script>
+        function gerar(event) {
+            event.preventDefault();
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const message = document.getElementById('message').value; 
+            const linkCopy = document.getElementById('linkCopy').value = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+            const linkClick = document.getElementById('linkClick')
+                .setAttribute('href', linkCopy);
+        }
+    </script>
+</body>
+</html>
