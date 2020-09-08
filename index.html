@@ -6,51 +6,85 @@
     <title>Integração com whatsapp</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
     <script>
-        $("#phoneNumber").mask("+00 (00) 00000-0000");
+        $("#phoneNumber").mask("(00)00000-0000");
     </script>
 </head>
 <body>
-    <form onsubmit="gerar(event)" id="form">
-        <section>
-            <label>Número do whatsapp: </label>
-            <input 
-                type="tel" 
-                name="numero"
-                placeholder="Ex: (99) 99999-9999" 
-                maxlength="14"
-                id="phoneNumber"
-            >
+    <div class="container">
+        <h3 class="text-center my-4">Gerador de link para whatsapp</h3>
+        <form onsubmit="generateLink(event)" id="form">
+            <section class="form-group">
+                <label>Número do whatsapp: </label>
+                <input 
+                    type="tel" 
+                    name="numero"
+                    placeholder="Ex: (99)99999-9999" 
+                    maxlength="14"
+                    id="phoneNumber"
+                    class="form-control"
+                >
+            </section>
+            <section class="form-group">
+                <label>Mensagem: </label>
+                <input 
+                    type="text" 
+                    name="text"
+                    placeholder="Mensagem padrão" 
+                    width="200"
+                    height="200"
+                    id="message"
+                    class="form-control"
+                >
+            </section>
+            <button type="submit" class="btn btn-success">Gerar link</button>
+        </form>
+        <hr>
+        <section class="form-group my-4">
+            <label>Link</label>
+            <input type="text" name="link" id="linkCopy" class="form-control">
         </section>
         <section>
-            <label>Mensagem: </label>
-            <input 
-                type="text" 
-                name="text"
-                placeholder="Mensagem padrão." 
-                width="200"
-                height="200"
-                id="message"
-            >
+            <button class="btn btn-success" onclick="btnCopyLink()" disabled id="btn-copy">
+                Copiar
+            </button>
+            <a id="linkClick" target="blanck">
+                <button class="btn btn-primary" disabled id="btn-whatsapp">
+                    Abrir no whatsapp
+                </button>
+            </a>
         </section>
-        <button type="submit">Gerar link</button>
-    </form>
-    <section>
-        <p>Link</p>
-        <input type="text" name="link" id="linkCopy">
-    </section>
-    <section>
-        <a href="" id="linkClick" target="blanck">Click para ir no whatsapp</a>
-    </section>
+    </div>
     <script>
-        function gerar(event) {
+
+        function removeMask(phone) {
+            for(let index = 0; index <= phone.length; index++ ) {
+                if(!Number.isInteger(parseInt(phone[index]))) {
+                phone = phone.replace(phone[index], '');
+                }
+            }
+            return phone;
+        }
+
+        function btnCopyLink() {
+            const text = document.getElementById('linkCopy').select();
+            document.execCommand('copy')
+        }
+
+        function generateLink(event) {
             event.preventDefault();
-            const phoneNumber = document.getElementById('phoneNumber').value;
-            const message = document.getElementById('message').value; 
+            let phoneNumber = document.getElementById('phoneNumber').value;
+            phoneNumber = `55${removeMask(phoneNumber)}`;   
+            const message = document.getElementById('message').value
+                .replace(/ /g, '%20'); 
             const linkCopy = document.getElementById('linkCopy').value = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
-            const linkClick = document.getElementById('linkClick')
-                .setAttribute('href', linkCopy);
+            const linkClick = document.getElementById('linkClick').href = linkCopy;
+            const btnWhatsapp = document.getElementById('btn-whatsapp').disabled = false;
+            const btnCopyLink = document.getElementById('btn-copy').disabled = false;
+            
         }
     </script>
+
 </body>
 </html>
