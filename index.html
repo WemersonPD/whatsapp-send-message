@@ -6,59 +6,13 @@
     <title>Integração com whatsapp</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
-    <!-- <link rel="stylesheet" href="./public//bootstrap/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
     <script>
         $("#phoneNumber").mask("(00)00000-0000");
     </script>
-</head>
-<body>
-    <div class="container">
-        <h3 class="text-center my-4">Gerador de link para whatsapp</h3>
-        <form onsubmit="generateLink(event)" id="form">
-            <section class="form-group">
-                <label>Número do whatsapp: </label>
-                <input 
-                    type="tel" 
-                    name="numero"
-                    placeholder="Ex: (99)99999-9999" 
-                    maxlength="14"
-                    id="phoneNumber"
-                    class="form-control"
-                >
-            </section>
-            <section class="form-group">
-                <label>Mensagem: </label>
-                <input 
-                    type="text" 
-                    name="text"
-                    placeholder="Mensagem padrão" 
-                    width="200"
-                    height="200"
-                    id="message"
-                    class="form-control"
-                >
-            </section>
-            <button type="submit" class="btn btn-success">Gerar link</button>
-        </form>
-        <hr>
-        <section class="form-group my-4">
-            <label>Link</label>
-            <input type="text" name="link" id="linkCopy" class="form-control">
-        </section>
-        <section>
-            <button class="btn btn-success" onclick="btnCopyLink()" disabled id="btn-copy">
-                Copiar
-            </button>
-            <a id="linkClick" target="blanck">
-                <button class="btn btn-primary" disabled id="btn-whatsapp">
-                    Abrir no whatsapp
-                </button>
-            </a>
-        </section>
-    </div>
     <script>
-
+    
         function removeMask(phone) {
             for(let index = 0; index <= phone.length; index++ ) {
                 if(!Number.isInteger(parseInt(phone[index]))) {
@@ -67,12 +21,12 @@
             }
             return phone;
         }
-
+    
         function btnCopyLink() {
             const text = document.getElementById('linkCopy').select();
             document.execCommand('copy')
         }
-
+    
         function generateLink(event) {
             event.preventDefault();
             let phoneNumber = document.getElementById('phoneNumber').value;
@@ -85,7 +39,98 @@
             const btnCopyLink = document.getElementById('btn-copy').disabled = false;
             
         }
+
+        function twoWayDataBinding(event) {
+            const messagePreview = document.getElementById('messagePreview').innerHTML = event.target.value;
+        }
     </script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-5 col-10 mx-auto">
+            <h3 class="text-center my-4">Gerador de link para whatsapp</h3>
+            <form onsubmit="generateLink(event)" id="form">
+                <section class="form-group">
+                    <label>Número do whatsapp:</label>
+                    <input 
+                        type="tel" 
+                        name="numero"
+                        placeholder="Ex: (99)99999-9999" 
+                        maxlength="14"
+                        id="phoneNumber"
+                        class="form-control"
+                    >
+                </section>
+                <section class="form-group">
+                    <label>Mensagem:</label>
+                    <input 
+                        type="text" 
+                        name="text"
+                        placeholder="Mensagem padrão" 
+                        id="message"
+                        class="form-control"
+                        onkeyup="twoWayDataBinding(event)"
+                    >
+                </section>
+                <button type="submit" class="btn btn-success">Gerar link</button>
+            </form>
+            <hr>
+            <section class="form-group my-4">
+                <label>Link</label>
+                <input type="text" name="link" id="linkCopy" class="form-control">
+            </section>
+            <section>
+                <button class="btn btn-success" onclick="btnCopyLink()" disabled id="btn-copy">
+                    Copiar
+                </button>
+                <a id="linkClick" target="blanck">
+                    <button class="btn btn-primary" disabled id="btn-whatsapp">
+                        Abrir no whatsapp
+                    </button>
+                </a>
+            </section>
+        </div>
+        <div class="container-general col-md-6 col-12 mt-5 mt-md-2">
+            <div class="chat">
+                <div class="chat-header">
+                    <div class="profile">
+                        <div class="left">
+                            <img src="assets/imgs/arrow-left.png" class="arrow">
+                            <img src="assets/imgs/pp.png" class="pp">
+                            <h2>Teste</h2>
+                            <span>online</span>
+                        </div>
+                        <div class="right">
+                            <img src="assets/imgs/video.png" class="icon">
+                            <img src="assets/imgs/phone.png" class="icon">
+                            <img src="assets/imgs/more.png" class="icon">
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-box">
+                    <div class="chat-r">
+                        <div class="sp"></div>
+                        <div class="mess mess-r">
+                            <p id="messagePreview" class="mt-5"></p>
+                            <div class="check">
+                                <span>X:XX PM</span>
+                                <img src="assets/imgs/check-1.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-footer">
+                    <img src="assets/imgs/emo.png" class="emo">
+                    <textarea placeholder="Type a message"></textarea>
+                    <div class="icons">
+                        <img src="assets/imgs/attach file.png">
+                        <img src="assets/imgs/camera.png">
+                    </div>
+                    <img src="assets/imgs/mic.png" class="mic">
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
